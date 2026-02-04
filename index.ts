@@ -38,8 +38,17 @@ const readyNumber = addNumbersInBoard(arrForBoard.gameNumbers, 16);
 function DoubleNumbers(myReadyNumberArr: number[]) {
     for (let i = 0; i < 2; i++) {
         const randomIndex = Math.floor(Math.random() * 16)
+        const item = getboard[randomIndex];
+
+        const existingValue = (item as HTMLElement).dataset.value;
+
+        if(existingValue) {
+            i--;
+            continue
+        }
+
         const currentNumber = myReadyNumberArr[i];
-        const item = getboard[randomIndex]
+        
         if (item) {
             (item as HTMLElement).dataset.value = currentNumber.toString();
             item.textContent = currentNumber.toString();
@@ -49,6 +58,67 @@ function DoubleNumbers(myReadyNumberArr: number[]) {
 }
 
 DoubleNumbers(arrForBoard.gameNumbers)
+
+
+function managmentBoardLogic () {
+    
+    getboard.forEach((item, index) =>  {
+        
+        const row = Math.floor(index / 4);
+
+        const value = (item as HTMLElement).dataset.value;
+
+        if(!value) return;
+
+        for( let i = index + 1; i < 16; i++) {
+            const neighborRow = Math.floor(i / 4)
+
+            if(row !== neighborRow) break;
+
+            const neighborItem = getboard[i];
+            const neighborValue =  (neighborItem as HTMLElement).dataset.value;
+
+            if(!neighborValue) continue;
+
+            if(neighborValue === value) {
+                console.log(`УРА! Пара через пустоту! Индекс ${index} и ${i} (Число ${value})`);
+                const sum = Number(neighborValue) + Number(value);
+                (neighborItem as HTMLElement).dataset.value = sum.toString();
+                neighborItem.textContent = sum.toString();
+                (item as HTMLElement).dataset.value = "";
+                item.textContent = "";
+
+                break;
+            }
+            if(neighborValue !== value) {
+                break;
+            }
+
+           
+        }
+
+        for(let j = index + 4; j < 16; j += 4) {
+            
+            const neighborItem = getboard[j];
+            const neighborValue = (neighborItem as HTMLElement).dataset.value;
+
+            if(!neighborValue) continue;
+
+            if(neighborValue === value) {
+                console.log(`ВЕРТИКАЛЬ: Пара ${index} и ${j} (Число ${value})`);
+                break;
+            }
+            if (neighborValue !== value) break;
+        }
+        
+    })
+}
+
+managmentBoardLogic()
+
+
+
+
 
 
 
