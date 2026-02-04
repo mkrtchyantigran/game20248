@@ -81,7 +81,7 @@ function managmentBoardLogic () {
             if(!neighborValue) continue;
 
             if(neighborValue === value) {
-                console.log(`УРА! Пара через пустоту! Индекс ${index} и ${i} (Число ${value})`);
+                
                 const sum = Number(neighborValue) + Number(value);
                 (neighborItem as HTMLElement).dataset.value = sum.toString();
                 neighborItem.textContent = sum.toString();
@@ -105,7 +105,7 @@ function managmentBoardLogic () {
             if(!neighborValue) continue;
 
             if(neighborValue === value) {
-                console.log(`ВЕРТИКАЛЬ: Пара ${index} и ${j} (Число ${value})`);
+               
                 break;
             }
             if (neighborValue !== value) break;
